@@ -7,12 +7,12 @@
         "name": "Sheng-Min Wang",
         "email": "wsm1214@gmail.com"
     }],
-    "require": {
-        "vlucas/phpdotenv": "^5.4"
-    },
     "autoload": {
         "psr-4": {
             "Purin\\LineLogin\\": "src/"
         }
+    },
+    "require": {
+        "vlucas/phpdotenv": "4.2.2"
     }
 }
