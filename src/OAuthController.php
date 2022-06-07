@@ -20,7 +20,7 @@ class OAuthController{
      * @param $code
      * @return string
      */
-    public function getAccessToken($code){
+    public function getAccessToken($code, $detail=false){
         $config = $this->configManager->getConfigs();
         $param = [
             'grant_type' => 'authorization_code',
@@ -33,8 +33,24 @@ class OAuthController{
         $url = self::BASEURL."token";
         $info = Tool::curl($url, $param);
         if(isset($info->error)) throw new Exception($info);
-
+        if($detail) return $info;
         return $info->access_token;
+    }
+
+    /**
+     * 取得用戶端 Id Data 解碼
+     *
+     * @see https://developers.line.biz/en/reference/line-login/#issue-access-token
+     * @param $code
+     * @return string
+     */
+    public function getDecodeIdData($code, $detail=false){
+        $info = $this->getAccessToken($code, true);
+        if(isset($info->error)) throw new Exception($data);
+        $jwt = $info->id_token;
+        $payload = json_decode(base64_decode(explode(".",$jwt)[1]));
+        if($detail) return $payload;
+        return $payload->sub;
     }
 
     /**
@@ -61,14 +77,14 @@ class OAuthController{
      * 重配用戶Token Refresh Token
      *
      * @see https://developers.line.biz/en/reference/line-login/#refresh-access-token
-     * @param $token
+     * @param $refresh_token
      * @return string
      */
-    public function RefreshAccessToken($token){
+    public function RefreshAccessToken($refresh_token, $detail=false){
         $config = $this->configManager->getConfigs();
         $param = [
             'grant_type' => 'refresh_token',
-            'refresh_token' => $token,
+            'refresh_token' => $refresh_token,
             'client_id' => $config[ $this->configManager::CLIENT_ID ],
             'client_secret' => $config[ $this->configManager::CLIENT_SECRET ],
         ];
@@ -76,7 +92,7 @@ class OAuthController{
         $url = self::BASEURL."token";
         $info = Tool::curl($url, $param);
         if(isset($info->error)) throw new Exception($info);
-
+        if($detail) return $info; 
         return $info->access_token;
     }
 
