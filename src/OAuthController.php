@@ -21,13 +21,14 @@ class OAuthController{
      * @return string
      */
     public function getAccessToken($code, $detail=false){
-        $config = $this->configManager->getConfigs();
+        $cm = $this->configManager;
+        $config = $cm->getConfigs();
         $param = [
             'grant_type' => 'authorization_code',
             'code' => $code,
-            'redirect_uri' => $config[ $this->configManager::CLIENT_REDIRECT_URI  ],
-            'client_id' => $config[ $this->configManager::CLIENT_ID ],
-            'client_secret' => $config[ $this->configManager::CLIENT_SECRET ],
+            'redirect_uri' => $config[ $cm::CLIENT_REDIRECT_URI  ],
+            'client_id' => $config[ $cm::CLIENT_ID ],
+            'client_secret' => $config[ $cm::CLIENT_SECRET ],
         ];
 
         $url = self::BASEURL."token";
@@ -81,12 +82,13 @@ class OAuthController{
      * @return string
      */
     public function RefreshAccessToken($refresh_token, $detail=false){
-        $config = $this->configManager->getConfigs();
+        $cm = $this->configManager;
+        $config = $cm->getConfigs();
         $param = [
             'grant_type' => 'refresh_token',
             'refresh_token' => $refresh_token,
-            'client_id' => $config[ $this->configManager::CLIENT_ID ],
-            'client_secret' => $config[ $this->configManager::CLIENT_SECRET ],
+            'client_id' => $config[ $cm::CLIENT_ID ],
+            'client_secret' => $config[ $cm::CLIENT_SECRET ],
         ];
 
         $url = self::BASEURL."token";
@@ -104,11 +106,12 @@ class OAuthController{
      * @return string
      */
     public function RevokeAccessToken($token){
-        $config = $this->configManager->getConfigs();
+        $cm = $this->configManager;
+        $config = $cm->getConfigs();
         $param = [
             'access_token' => $token,
-            'client_id' => $config[ $this->configManager::CLIENT_ID ],
-            'client_secret' => $config[ $this->configManager::CLIENT_SECRET ],
+            'client_id' => $config[ $cm::CLIENT_ID ],
+            'client_secret' => $config[ $cm::CLIENT_SECRET ],
         ];
 
         $url = self::BASEURL."verify";
@@ -125,11 +128,12 @@ class OAuthController{
      * @return string
      */
     public function VerifyIDToken($token, $detail=false){
-        $config = $this->configManager->getConfigs();
+        $cm = $this->configManager;
+        $config = $cm->getConfigs();
         $param = [
             'access_token' => $token,
-            'client_id' => $config[ $this->configManager::CLIENT_ID ],
-            'client_secret' => $config[ $this->configManager::CLIENT_SECRET ],
+            'client_id' => $config[ $cm::CLIENT_ID ],
+            'client_secret' => $config[ $cm::CLIENT_SECRET ],
         ];
 
         $url = self::BASEURL."verify";

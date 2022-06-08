@@ -20,11 +20,12 @@ class LineProfileController{
      * @return string
      */
     public function getUserprofile($token){
-        $config = $this->configManager->getConfigs();
+        $cm = $this->configManager;
+        $config = $cm->getConfigs();
         $param = [
             'access_token' => $token,
-            'client_id' => $config[ $this->configManager::CLIENT_ID ],
-            'client_secret' => $config[ $this->configManager::CLIENT_SECRET ],
+            'client_id' => $config[ $cm::CLIENT_ID ],
+            'client_secret' => $config[ $cm::CLIENT_SECRET ],
         ];
 
         $header = ["Authorization: Bearer ".$token];
